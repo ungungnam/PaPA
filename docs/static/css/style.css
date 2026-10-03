@@ -133,19 +133,6 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--border);
 }
 
-.venue {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 5px 14px;
-  margin-bottom: 20px;
-}
-
 .hero h1 {
   font-size: clamp(30px, 5.2vw, 50px);
   line-height: 1.14;
@@ -436,22 +423,6 @@ td.best { font-weight: 700; }
   font-size: 13.5px;
   color: var(--fg-faint);
   margin: 0 0 30px;
-}
-
-/* ---------- bibtex ---------- */
-
-pre.bibtex {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: var(--fg-muted);
-  box-shadow: var(--shadow);
-  margin: 0;
 }
 
 /* ---------- footer ---------- */

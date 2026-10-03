@@ -9,8 +9,6 @@ Seoul National University &nbsp;·&nbsp; <sup>†</sup>Corresponding author
 [**Paper**](docs/static/paper/PaPA_main.pdf) &nbsp;·&nbsp;
 [**Supplementary**](docs/static/paper/PaPA_supplementary.pdf)
 
-> Under review at RSS 2026.
-
 ---
 
 ## Overview
@@ -61,17 +59,3 @@ python3 -m http.server 8000 --directory docs
 ## Hardware
 
 AgileX PiPER 6-DoF arm with a two-finger gripper, and three RGB cameras — one wrist-mounted plus two fixed workspace cameras (Intel RealSense D455 and L515). Extrinsics are calibrated with AprilTag-based methods and standard hand–eye calibration.
-
-## Citation
-
-```bibtex
-@inproceedings{nam2026papa,
-  title     = {Towards Scaling Robotic Manipulation:
-               Leveraging World Knowledge as Automated Teleoperator},
-  author    = {Nam, Unghui and Bae, Minji and Kim, Donghoon
-               and Lee, Suyun and Shim, Byonghyo},
-  booktitle = {Robotics: Science and Systems (RSS)},
-  year      = {2026},
-  note      = {Under review}
-}
-```
