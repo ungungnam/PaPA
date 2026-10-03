@@ -5,7 +5,7 @@
 Unghui Nam, Minji Bae, Donghoon Kim, Suyun Lee, Byonghyo Shim<sup>†</sup>
 Seoul National University &nbsp;·&nbsp; <sup>†</sup>Corresponding author
 
-[**Project page**](https://ungungnam.github.io/Pick-and-Place-Anything/) &nbsp;·&nbsp;
+[**Project page**](https://ungungnam.github.io/PaPA/) &nbsp;·&nbsp;
 [**Paper**](docs/static/paper/PaPA_main.pdf) &nbsp;·&nbsp;
 [**Supplementary**](docs/static/paper/PaPA_supplementary.pdf)
 
@@ -47,7 +47,7 @@ Code for the PaPA pipeline will be released in this repository.
 ## Project page
 
 The website is served by GitHub Pages from the `docs/` directory on `main`:
-<https://ungungnam.github.io/Pick-and-Place-Anything/>
+<https://ungungnam.github.io/PaPA/>
 
 To preview it locally:
 
