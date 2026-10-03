@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaPA: Pick-and-Place Anything</title>
+<meta name="description" content="PaPA: Pick-and-Place Anything — a scalable real-world robotic data collection framework that turns world knowledge in vision-language models into executable manipulation trajectories, replacing continuous teleoperation with lightweight post-hoc verification.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="PaPA: Pick-and-Place Anything">
+<meta property="og:description" content="Towards Scaling Robotic Manipulation: Leveraging World Knowledge as Automated Teleoperator.">
+<meta property="og:image" content="static/images/fig1_teaser.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;560;650;700;750&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">PaPA</a>
+    <nav>
+      <a href="#abstract">Abstract</a>
+      <a href="#video">Video</a>
+      <a href="#method">Method</a>
+      <a href="#setup">Setup</a>
+      <a href="#results">Results</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">◐</button>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="venue">Under review &middot; RSS 2026</span>
+    <h1>PaPA: Pick-and-Place Anything</h1>
+    <p class="subtitle">Towards Scaling Robotic Manipulation:<br>Leveraging <b>World Knowledge</b> as <b>Automated Teleoperator</b></p>
+
+    <p class="authors">
+      <span class="author">Unghui Nam</span>,
+      <span class="author">Minji Bae</span>,
+      <span class="author">Donghoon Kim</span>,
+      <span class="author">Suyun Lee</span>,
+      <span class="author">Byonghyo Shim</span><sup>&dagger;</sup>
+    </p>
+    <p class="affil">Seoul National University</p>
+    <p class="note"><sup>&dagger;</sup>Corresponding author</p>
+
+    <div class="btn-row">
+      <a class="btn" href="static/paper/PaPA_main.pdf">
+        <svg viewBox="0 0 24 24"><path d="M6 2h8l6 6v14a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5z"/></svg>
+        Paper
+      </a>
+      <a class="btn ghost" href="static/paper/PaPA_supplementary.pdf">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h10v2H4z"/></svg>
+        Supplementary
+      </a>
+      <a class="btn ghost" href="#video">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Demo video
+      </a>
+      <span class="btn disabled">
+        <svg viewBox="0 0 24 24"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6z"/></svg>
+        Code &middot; coming soon
+      </span>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="v">97.5%</div><div class="k">Behavior cloning success,<br>matching expert teleoperation</div></div>
+      <div class="stat"><div class="v">~2.0</div><div class="k">Episodes collected<br>per minute</div></div>
+      <div class="stat"><div class="v">1.16</div><div class="k">Human interventions<br>per episode</div></div>
+      <div class="stat"><div class="v">90.9%</div><div class="k">Data yield<br>(valid rollouts)</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="abstract">
+  <div class="wrap">
+    <h2>Abstract</h2>
+    <div class="two-col">
+      <div>
+        <p>The scalability of robot learning is significantly hindered by the cost of collecting real-world manipulation data. Despite recent progress in imitation learning, existing datasets are still predominantly acquired through expert teleoperation, which requires continuous low-level human control, specialized hardware, and carefully calibrated environments. This labor-intensive paradigm severely limits data throughput, generalizability, and long-term scalability.</p>
+        <p>We propose <b>PaPA: Pick-and-Place Anything</b>, a scalable robotic data collection framework for real-world manipulation that addresses this bottleneck through autonomous trajectory generation with minimal human supervision. PaPA leverages world knowledge encoded in vision-language models to ground open-vocabulary language instructions into explicit geometric representations, enabling the autonomous generation of robot-executable manipulation trajectories. This approach reduces human supervision to lightweight post-hoc binary verification, eliminating the need for continuous teleoperation.</p>
+      </div>
+      <div>
+        <p>Through extensive real-world experiments, we demonstrate that datasets collected by PaPA match the quality of expert teleoperation for imitation learning, achieving a policy success rate of <b>97.5%</b>, while maintaining an efficient data collection rate of approximately <b>two episodes per minute</b>.</p>
+        <p>These results show that high-quality robotic manipulation data can be acquired at scale without continuous expert supervision, positioning PaPA as a practical and effective alternative to teleoperation-centric data collection. More broadly, PaPA demonstrates how world knowledge can be systematically transformed into scalable real-world robotic data, offering a concrete step toward data-driven robot learning at scale.</p>
+      </div>
+    </div>
+
+    <figure style="margin-top: 18px;">
+      <img src="static/images/fig1_teaser.png" alt="Comparison between standard teleoperation-based data collection and PaPA." class="fig-narrow">
+      <figcaption class="fig-narrow"><b>PaPA vs. standard teleoperation.</b> Conventional approaches require continuous low-level control by human experts. PaPA instead leverages world knowledge to automatically generate grounded manipulation trajectories from visual observations and language instructions, reducing human involvement to lightweight per-episode trajectory validation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="alt" id="video">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Demo video</h2>
+      <p class="lede">Real-world data collection with PaPA, including the cyclic collection pipeline: the robot perceives, plans, executes, and a supervisor only answers <em>success or failure</em>.</p>
+    </div>
+    <div class="video-shell">
+      <video controls preload="metadata" poster="static/videos/poster.jpg" playsinline>
+        <source src="static/videos/demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How PaPA works</h2>
+      <p class="lede">Given a language instruction <em>L</em> and initial multi-view observations <em>o</em><sub>1</sub>, PaPA autonomously generates a robot-executable pick-and-place trajectory. The pipeline decouples high-level semantic reasoning from low-level geometric planning, so that neither stage needs task-specific supervision.</p>
+    </div>
+
+    <figure>
+      <img src="static/images/fig2_overview.png" alt="Overview of autonomous trajectory generation in PaPA.">
+      <figcaption><b>Overview of autonomous trajectory generation.</b> (Top) The pipeline is decomposed into <em>Perception via World Knowledge</em> and <em>Trajectory Planning</em>. (Bottom) Vision-language reasoning provides global semantic guidance — target object and goal direction — while grounded segmentation localizes those semantics in the scene. Trajectory planning then reconstructs object geometry, estimates grasp poses, and emits an executable trajectory.</figcaption>
+    </figure>
+
+    <div class="cards">
+      <div class="card">
+        <div class="step">Stage 1</div>
+        <h3>Perception via world knowledge</h3>
+        <p>A zero-shot VLM (InternVL3-8B) reads the instruction and the images, and returns two things: <em>global guidance</em> — a preferred approach direction for the manipulator — and concise <em>textual descriptors</em> for the object to grasp and the placement region. Grounded-SAM then turns those descriptors into per-view semantic masks. Because the semantics come from an open-vocabulary model, implicit instructions such as &ldquo;buying yellow fruits&rdquo; resolve against the current scene.</p>
+      </div>
+      <div class="card">
+        <div class="step">Stage 2</div>
+        <h3>Trajectory planning</h3>
+        <p>The 2D masks are back-projected into silhouette cones and intersected across calibrated cameras, yielding an object point cloud under the visual-hull formulation. A PCA-based grasp estimator recovers the object's principal axes, giving a pick pose and a place pose. Interpolating <em>init &rarr; pick &rarr; place</em> produces a continuous trajectory, filtered for kinematic feasibility and smoothness.</p>
+      </div>
+      <div class="card">
+        <div class="step">Stage 3</div>
+        <h3>Lightweight validation</h3>
+        <p>The trajectory is executed while multi-view observations and actions are recorded. A human supervisor provides a single binary success label per episode — not per frame. Successful rollouts enter the dataset; failures, typically grasp slippage or collisions, are discarded. Human effort drops to <b>1.16 interventions per episode</b>.</p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="static/images/fig4_trajectory.png" alt="Grasp-pose-aware trajectory generation and execution rollout.">
+      <figcaption><b>Grasp-pose-aware trajectory generation.</b> (Left) The trajectory interpolates three key waypoints: initial pose, pick pose, and place pose. (Right) The robot executes it with a low-level controller, closing the gripper at the pick pose and opening it at the place pose.</figcaption>
+    </figure>
+
+    <figure style="margin-bottom:0">
+      <img src="static/images/fig3_reconstruction.png" alt="Vision-language-grounded object geometry reconstruction." class="fig-narrow">
+      <figcaption class="fig-narrow"><b>Grounded geometry reconstruction.</b> Grounded segmentation masks define silhouette cones under the visual hull formulation; intersecting these cones across camera views yields the reconstructed object point cloud — no depth-dependent 3D detector required.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="alt" id="setup">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Experimental setup</h2>
+      <p class="lede">All experiments run on real hardware — no simulation, no sim-to-real transfer.</p>
+    </div>
+    <div class="two-col">
+      <figure style="margin-bottom:0">
+        <img src="static/images/fig5_hardware.png" alt="Hardware setup: AgileX PiPER arm with three RGB cameras.">
+        <figcaption><b>Hardware setup.</b> An AgileX PiPER manipulator with a multi-view RGB perception system: a wrist-mounted camera, a front-facing camera, and an overhead table-view camera.</figcaption>
+      </figure>
+      <div>
+        <h3>Robot &amp; sensing</h3>
+        <p>A 6-DoF AgileX PiPER arm with a two-finger gripper, paired with three RGB cameras — one wrist-mounted and two fixed workspace cameras (Intel RealSense D455 and L515). Extrinsics are calibrated with AprilTag-based methods and standard hand&ndash;eye calibration, aligning visual observations with robot kinematics for accurate 3D reconstruction.</p>
+        <h3>Tasks</h3>
+        <p>Instructions follow a pick-and-place structure, <em>&ldquo;Pick A and place it into B&rdquo;</em>, with A &isin; {banana, sausage, corn, carrot} and B &isin; {plate, basket, pan, pot}. Four tasks are instantiated: <b>Task 1</b> (banana, plate), <b>Task 2</b> (sausage, basket), <b>Task 3</b> (corn, pan), <b>Task 4</b> (carrot, pot). Each task collects 20 successful demonstrations for training.</p>
+        <h3>Baselines</h3>
+        <p><b>Human teleoperation</b> (leader&ndash;follower arms with identical embodiment), <b>CLIP-RT</b> (language-based teleoperation, where a human issues iterative high-level instructions), and <b>VoxPoser</b> (LLM-generated 3D value maps guiding trajectory optimization).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Results</h2>
+      <p class="lede">PaPA is evaluated along four axes: downstream policy success, trajectory quality, collection efficiency, and human effort.</p>
+    </div>
+
+    <h3 style="margin-bottom:16px">Data quality</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption><b>Table I — Task-wise behavior cloning performance.</b> Success counts over 10 rollouts for Diffusion Policy trained on each collected dataset. Higher is better.</caption>
+        <thead>
+          <tr><th rowspan="2">Data collection method</th><th colspan="4">Behavior cloning task success</th><th rowspan="2">Average</th></tr>
+          <tr><th>Task 1</th><th>Task 2</th><th>Task 3</th><th>Task 4</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Human Teleoperation</th><td class="best">10 / 10</td><td class="best">9 / 10</td><td>9 / 10</td><td class="best">10 / 10</td><td>9.75 / 10</td></tr>
+          <tr><th>CLIP-RT</th><td>0 / 10</td><td>0 / 10</td><td>0 / 10</td><td>0 / 10</td><td>0.00 / 10</td></tr>
+          <tr><th>VoxPoser</th><td>3 / 10</td><td>1 / 10</td><td>3 / 10</td><td>1 / 10</td><td>2.00 / 10</td></tr>
+          <tr class="ours"><th>PaPA (ours)</th><td class="best">10 / 10</td><td class="best">9 / 10</td><td class="best">10 / 10</td><td>9 / 10</td><td>9.75 / 10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Policies trained on PaPA data reach <b>9.75 / 10</b> average success — identical to expert human teleoperation — while CLIP-RT and VoxPoser data are insufficient for effective imitation learning.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption><b>Table II — Trajectory quality.</b> Fréchet distance and DTW measure similarity to human demonstrations; jerkiness measures motion smoothness. Lower is better throughout.</caption>
+        <thead>
+          <tr><th>Data collection method</th><th>Fréchet distance (cm)</th><th>DTW (cm)</th><th>Jerkiness (cm/s³)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Human Teleoperation</th><td>&ndash;</td><td>&ndash;</td><td>38.0 ± 3.7</td></tr>
+          <tr><th>CLIP-RT</th><td>14.6 ± 3.0</td><td>4.5 ± 0.8</td><td>90.7 ± 9.1</td></tr>
+          <tr><th>VoxPoser</th><td>20.9 ± 0.7</td><td>5.4 ± 0.1</td><td>76.0 ± 1.2</td></tr>
+          <tr class="ours"><th>PaPA (ours)</th><td class="best">9.2 ± 1.1</td><td class="best">2.9 ± 0.4</td><td class="best">9.7 ± 0.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">PaPA trajectories are the closest to human demonstrations <em>and</em> the smoothest — jerkiness is roughly 4× lower than human teleoperation itself.</p>
+
+    <figure>
+      <img src="static/images/fig6_trajviz.png" alt="Visualization of three sampled trajectories per data collection method for Task 1." class="fig-narrow">
+      <figcaption class="fig-narrow"><b>Sampled trajectories for Task 1.</b> Human demonstrations are smooth and diverse. CLIP-RT is constrained to stiff, piecewise motions by its discrete language action space. VoxPoser's greedy optimization yields near-straight, low-diversity paths. PaPA produces diverse approach behaviors that still converge precisely onto the grasp and placement poses.</figcaption>
+    </figure>
+
+    <h3 style="margin: 36px 0 16px">Collection efficiency</h3>
+
+    <div class="two-col">
+      <figure style="margin-bottom:0">
+        <img src="static/images/fig7_efficiency.png" alt="Average episodes collected per minute across four tasks.">
+        <figcaption><b>Data collection rate.</b> Average episodes collected per minute across the four tasks. Higher is better.</figcaption>
+      </figure>
+      <div>
+        <p>PaPA sustains <b>1.9–2.1 episodes per minute</b> across all tasks. Human teleoperation is faster in raw throughput (3.1–3.3 episodes/min) but requires an expert on the loop the entire time, so it cannot run unattended. CLIP-RT (0.7–0.9) and VoxPoser (0.6–0.7) are substantially slower: CLIP-RT pays interaction overhead for every incremental language command, and VoxPoser repeats perception and planning cycles within a single rollout.</p>
+        <p>PaPA restricts vision-language reasoning to a <em>single</em> perception step per episode and generates the full trajectory with lightweight geometric planning — which is what keeps the rate stable.</p>
+
+        <div class="table-wrap" style="margin-top:20px">
+          <table>
+            <caption><b>Table III — Data yield.</b> Fraction of attempted rollouts that produce a valid demonstration. Higher is better.</caption>
+            <thead>
+              <tr><th>Method</th><th>Task 1</th><th>Task 2</th><th>Task 3</th><th>Task 4</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>VoxPoser</th><td>74.1%</td><td class="best">80.0%</td><td>50.0%</td><td>54.1%</td></tr>
+              <tr class="ours"><th>PaPA (ours)</th><td class="best">90.9%</td><td class="best">80.0%</td><td class="best">90.9%</td><td class="best">83.3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin: 36px 0 16px">Human effort</h3>
+    <p>Physical effort is measured as direct human interactions per episode; cognitive effort uses a PASAT-style dual-task paradigm (correct auditory responses per second — higher means more spare cognitive capacity), and perceived workload uses NASA-TLX.</p>
+    <div class="table-wrap">
+      <table>
+        <caption><b>Human workload during data collection.</b></caption>
+        <thead>
+          <tr><th>Method</th><th>Human interactions / episode</th><th>PASAT correct responses / s</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Human Teleoperation</th><td>continuous low-level control</td><td>0.28</td></tr>
+          <tr><th>CLIP-RT</th><td>36.61 language instructions</td><td>0.17</td></tr>
+          <tr><th>VoxPoser</th><td>1.61 post-hoc verifications</td><td>0.30</td></tr>
+          <tr class="ours"><th>PaPA (ours)</th><td class="best">1.16 post-hoc verifications</td><td class="best">0.33</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">PaPA imposes the lowest mental workload of all four methods on NASA-TLX as well, followed by VoxPoser, human teleoperation, and CLIP-RT.</p>
+
+    <h3 style="margin: 36px 0 16px">Ablations</h3>
+    <div class="table-wrap">
+      <table>
+        <caption><b>Table IV — Ablation studies.</b> Both global guidance and lightweight human supervision matter.</caption>
+        <thead>
+          <tr><th>Variant</th><th>Task success</th><th>Fréchet distance (cm)</th><th>DTW (cm)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>w/o global guidance</th><td>3 / 10</td><td>10.5 ± 2.0</td><td>3.2 ± 0.2</td></tr>
+          <tr><th>w/o human supervision</th><td>8 / 10</td><td>9.6 ± 0.5</td><td>3.1 ± 0.1</td></tr>
+          <tr class="ours"><th>PaPA (ours)</th><td class="best">10 / 10</td><td class="best">9.2 ± 1.1</td><td class="best">2.9 ± 0.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Removing global guidance collapses success from 10/10 to 3/10: without a semantically consistent approach direction, trajectories lose the motion diversity that imitation learning needs to generalize. Dropping the binary success label (training on 18 successes + 2 failures out of 20 episodes) costs 2 points of success and introduces oscillatory, corrective motions.</p>
+
+    <h3 style="margin: 36px 0 16px">Generalization</h3>
+    <p>In the supplementary material, PaPA is evaluated on four unseen object&ndash;container pairings — Task 5 (banana, pan), Task 6 (sausage, pot), Task 7 (corn, basket), Task 8 (carrot, plate) — reaching <b>85%</b> average success versus 92.5% for human teleoperation. Training <b>ACT</b> instead of Diffusion Policy on the same datasets also keeps PaPA at or above the human-teleoperation baseline, indicating the data quality is not tied to one imitation learning architecture.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Limitations</h2>
+    <p class="lede" style="margin-bottom:0">PaPA targets pick-and-place, which covers a large portion of everyday manipulation but not all of it. Extending the framework to deformable or dexterous tasks such as cloth folding requires tighter integration of grounded scene perception and planning — richer grasp and contact modeling, and task-aware motion primitives — which is the direction of our future work.</p>
+  </div>
+</section>
+
+<section id="bibtex">
+  <div class="wrap">
+    <h2>BibTeX</h2>
+    <p class="lede">The paper is currently under review; this entry will be updated once a citation is final.</p>
+<pre class="bibtex">@inproceedings{nam2026papa,
+  title     = {Towards Scaling Robotic Manipulation:
+               Leveraging World Knowledge as Automated Teleoperator},
+  author    = {Nam, Unghui and Bae, Minji and Kim, Donghoon
+               and Lee, Suyun and Shim, Byonghyo},
+  booktitle = {Robotics: Science and Systems (RSS)},
+  year      = {2026},
+  note      = {Under review}
+}</pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>PaPA: Pick-and-Place Anything &middot; Seoul National University</p>
+    <p>Page source available in this repository. Website template released under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> license.</p>
+  </div>
+</footer>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>

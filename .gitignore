@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+._*
+
+# Python (for the code release)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Editors
+.vscode/
+.idea/
+
+# Logs & checkpoints
+*.log
+checkpoints/
+outputs/
+wandb/
+
+# oh-my-claudecode runtime state
+.omc/
